@@ -8,7 +8,7 @@ end
 
 % Debug
 % varargin{2} = 'F:\2p\stephen\SZ336\SZ336\SZ336\AVG_SZ336_200303_001_pmt0_midi.tif';
-% varargin{2} = 'E:\histology\stephen\SZ705\SZ705A small.tif';
+varargin{2} = 'E:\histology\stephen\SZ705\SZ705A small.tif';
 
 p = inputParser;
 
@@ -94,10 +94,10 @@ hztext = uicontrol(hfig, 'Style', 'text', 'String', ['Z: ', num2str(z)],...
 if length(sizevec) == 3
     maxz = sizevec(3);
 else
-    maxz = 1;
+    z = 1;
 end
 hzslide = uicontrol(hfig, 'Style', 'slider', 'Value', z, 'Min', 1,...
-    'Max', maxz, 'SliderStep', [0.05 0.2], 'Position', [70+uioffsetx 20 200 20],...
+    'Max', sizevec(3), 'SliderStep', [0.05 0.2], 'Position', [70+uioffsetx 20 200 20],...
     'callback', @zslidercallback);
 
     function zslidercallback(~, ~)
@@ -179,7 +179,7 @@ hoslide = uicontrol(hfig, 'Style', 'slider', 'Value', o, 'Min', 1,...
 
 % Button for apply all
 hbuttonapply = uicontrol(hfig, 'Style', 'pushbutton', 'String', ...
-    ['Apply to all ' , num2str(maxz), ' sections'],...
+    ['Apply to all ' , num2str(sizevec(3)), ' sections'],...
     'Position', [1080+uioffsetx 20 200 20], 'callback', @buttoncallback);
 
     function buttoncallback(~,~)
@@ -188,7 +188,7 @@ hbuttonapply = uicontrol(hfig, 'Style', 'pushbutton', 'String', ...
         
         % Make output
         imout = im;
-        for i = 1 : maxz
+        for i = 1 : sizevec(3)
             imout(:,:,i) = localnormalizecore(im(:,:,i), [n, m], [o, o]);
         end
         
@@ -200,6 +200,5 @@ hbuttonapply = uicontrol(hfig, 'Style', 'pushbutton', 'String', ...
         save(fpara, '-v7.3', 'fp', 'fn', 'n', 'm', 'o');
         
         hbuttonapply.String = 'Data saved';
-        disp(fnout);
     end
 end
