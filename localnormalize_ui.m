@@ -14,9 +14,11 @@ p = inputParser;
 
 addOptional(p, 'tifpath', ''); % Give direct path
 addOptional(p, 'defaultpath', '\\nasquatch\data\2p'); % Give default path for ui
+addOptional(p, 'crange', []);
 addOptional(p, 'gausssizes', [8 30]);
 addOptional(p, 'medsizes', 2);
-addOptional(p, 'loadprevparameters', true);    
+addOptional(p, 'loadprevparameters', true);
+addOptional(p, 'pos', [100 100 1600 700]);
 
 % Unpack if needed
 if iscell(varargin) && size(varargin,1) * size(varargin,2) == 1
@@ -36,7 +38,11 @@ else
 end
 
 % Read
-im = readtiff(fullfile(fp, [fn, ext]));
+try
+    im = readtiff(fullfile(fp, [fn, ext]));
+catch
+    im = imread(fullfile(fp, [fn, ext]));
+end
 
 % size
 sizevec = size(im);
@@ -69,11 +75,15 @@ end
 im2show = im(:,:,z);
 im2showln = localnormalizecore(im2show, [n, m], [o, o]);
 
-hfig = figure('Position', [100 200 1600 700]);
+hfig = figure('Position', p.pos);
 
 % Left
 subplot(1,2,1);
-wleft = imagesc(im2show);
+if isempty(p.crange)
+    wleft = imagesc(im2show);
+else
+    wleft = imagesc(im2show, p.crange);
+end
 title('Raw image')
 
 % Right
