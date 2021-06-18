@@ -9,7 +9,7 @@ end
 % Debug
 % varargin{2} = 'F:\2p\stephen\SZ336\SZ336\SZ336\AVG_SZ336_200303_001_pmt0_midi.tif';
 % varargin{2} = 'E:\histology\stephen\SZ705\SZ705A small.tif';
-varargin = {'defaultpath', 'E:\histology\stephen\SZ725B'};
+% varargin = {'defaultpath', 'E:\histology\stephen\SZ725B'};
 
 
 p = inputParser;
@@ -74,8 +74,8 @@ for i = 1 : nfiles
     [~, fn, ~] = fileparts(fn_curr);
     
     % output filename
-    fnout = fullfile(fp, [fn_curr, '_ln.tif']);
-    fpara = fullfile(fp, [fn_curr, '_param.mat']);
+    fnout = fullfile(fp, [fn, '_ln.tif']);
+    fpara = fullfile(fp, [fn, '_param.mat']);
     
     % Waitbar
     waitbar(i/nfiles, hwait, ['Processing ', fn_curr]);
