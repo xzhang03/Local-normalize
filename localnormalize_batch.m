@@ -1,4 +1,4 @@
-function imout = localnormalize_batch(varargin)
+function localnormalize_batch(varargin)
 %localnormalize_batch applies segmentation from a parameter file in batch
 
 %% Parse
