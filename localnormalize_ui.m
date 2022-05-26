@@ -19,6 +19,7 @@ addOptional(p, 'gausssizes', [8 30]);
 addOptional(p, 'medsizes', 2);
 addOptional(p, 'loadprevparameters', true);
 addOptional(p, 'pos', [100 100 1600 700]);
+addOptional(p, 'im', []);
 
 % Unpack if needed
 if iscell(varargin) && size(varargin,1) * size(varargin,2) == 1
@@ -30,34 +31,45 @@ p = p.Results;
 
 %% IO
 % Path parsing
-if isempty(p.tifpath)
-    [fn, fp] = uigetfile(fullfile(p.defaultpath, '*.tif'));
-    [~, fn, ext] = fileparts(fn);
-else
-    [fp, fn, ext] = fileparts(p.tifpath);
-end
+if isempty(p.im)
+    if isempty(p.tifpath)
+        [fn, fp] = uigetfile(fullfile(p.defaultpath, '*.tif'));
+        [~, fn, ext] = fileparts(fn);
+    else
+        [fp, fn, ext] = fileparts(p.tifpath);
+    end
 
-% Read
-try
-    im = readtiff(fullfile(fp, [fn, ext]));
-catch
-    im = imread(fullfile(fp, [fn, ext]));
+    % Read
+    try
+        im = readtiff(fullfile(fp, [fn, ext]));
+    catch
+        im = imread(fullfile(fp, [fn, ext]));
+    end
+    
+    nooutput = false;
+else
+    im = p.im;
+    nooutput = true;
 end
 
 % size
 sizevec = size(im);
 
 % output filename
-fnout = fullfile(fp, [fn, '_ln.tif']);
-fpara = fullfile(fp, [fn, '_param.mat']);
+if ~nooutput
+    fnout = fullfile(fp, [fn, '_ln.tif']);
+    fpara = fullfile(fp, [fn, '_param.mat']);
+end
 
 % Get parameters
-if exist(fpara, 'file') && p.loadprevparameters
-    loaded = load(fpara, 'n', 'm', 'o');
-    n = loaded.n;
-    m = loaded.m;
-    o = loaded.o;
-    disp('Parameters loaded from previous setting')
+if ~nooutput
+    if exist(fpara, 'file') && p.loadprevparameters
+        loaded = load(fpara, 'n', 'm', 'o');
+        n = loaded.n;
+        m = loaded.m;
+        o = loaded.o;
+        disp('Parameters loaded from previous setting')
+    end
 else
     n = p.gausssizes(1);
     m = p.gausssizes(2);
