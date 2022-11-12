@@ -13,7 +13,8 @@ end
 
 % 2D filter
 im = medfilt2(im, medsizes, 'symmetric'); %looks like a bug
-        
+im(isnan(im)) = nanmedian(im(:));
+
 % gaussian normalize
 f_prime = single(im)-single(imgaussfilt(single(im),gausssizes(1)));
 imout = f_prime./(imgaussfilt(f_prime.^2,gausssizes(2)).^(1/2));

@@ -69,6 +69,10 @@ if ~nooutput
         m = loaded.m;
         o = loaded.o;
         disp('Parameters loaded from previous setting')
+    else
+        n = p.gausssizes(1);
+        m = p.gausssizes(2);
+        o = p.medsizes;
     end
 else
     n = p.gausssizes(1);
