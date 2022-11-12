@@ -39,6 +39,9 @@ end
 
 if isempty(p.parapath)
     [fpara_gen, fpara_genfolder] = uigetfile(fullfile(fp, '*param.mat'), 'Select parameter file');
+    loaded = load(fullfile(fpara_genfolder, fpara_gen), 'n', 'm', 'o');
+else
+    loaded = load(p.parapath, 'n', 'm', 'o');
 end
 
 if ~iscell(fns)
@@ -49,7 +52,6 @@ end
 nfiles = length(fns);
 
 % load parameter file
-loaded = load(fullfile(fpara_genfolder, fpara_gen), 'n', 'm', 'o');
 n = loaded.n;
 m = loaded.m;
 o = loaded.o;
