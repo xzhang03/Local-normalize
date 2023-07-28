@@ -6,10 +6,6 @@ if nargin < 1
     varargin = {'tifpath', ''};
 end
 
-% Debug
-% varargin{2} = 'F:\2p\stephen\SZ336\SZ336\SZ336\AVG_SZ336_200303_001_pmt0_midi.tif';
-% varargin{2} = 'E:\histology\stephen\SZ705\SZ705A small.tif';
-
 p = inputParser;
 
 addOptional(p, 'tifpath', ''); % Give direct path
